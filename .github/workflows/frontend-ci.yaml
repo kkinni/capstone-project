@@ -1,6 +1,6 @@
 name: 'Frontend CI'
 
-# Run on pull requests against main and manually
+# Run this workflows on pull requests against Main branch and enable manual trigger
 on:
   pull_request:
     branches:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Linting - NEED TO ADD CACHE ACTION
+  # Linting
   linting:
     runs-on: ubuntu-latest
     steps:
