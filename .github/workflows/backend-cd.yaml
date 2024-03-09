@@ -2,7 +2,7 @@ name: 'Backend Continuous Integration'
 
 # Run this workflows on pull requests against Main branch and enable manual trigger
 on:
-  merge:
+  push:
     paths:
       - starter/backend/**
     branches:
