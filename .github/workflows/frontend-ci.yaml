@@ -1,4 +1,4 @@
-name: 'Frontend CI'
+name: 'Frontend Continuous Integration'
 
 # Run this workflows on pull requests against Main branch and enable manual trigger
 on:
@@ -16,13 +16,14 @@ jobs:
       - name: Checkout frontend code
         uses: actions/checkout@v3
       
-      # Setup Node JS
+      # Setup Node JS and restore cache
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      
-      # Perform cache action
+          cache: 'npm'
+          cache-dependency-path: ${{github.workspace}}/starter/frontend/package-lock.json
+
 
       # Install dependencies
       - name: Install dependencies
@@ -40,13 +41,13 @@ jobs:
       - name: Checkout frontend code
         uses: actions/checkout@v3
       
-      # Setup Node JS
+      # Setup Node JS and restore cache
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      
-      # Perform cache action
+          cache: 'npm'
+          cache-dependency-path: ${{github.workspace}}/starter/frontend/package-lock.json
 
       # Install dependencies
       - name: Install dependencies
@@ -65,19 +66,21 @@ jobs:
       - name: Checkout frontend code
         uses: actions/checkout@v3
       
-      # Setup Node JS
+      # Setup Node JS and restore cache
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: 'npm'
+          cache-dependency-path: ${{github.workspace}}/starter/frontend/package-lock.json
       
-      # Perform cache action
-
       # Install dependencies
       - name: Install dependencies
         run: cd starter/frontend && npm ci
 
       # Run build
+      - name: Build image
+        run: docker build starter/frontend
       
     
     
