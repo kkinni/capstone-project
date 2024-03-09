@@ -33,18 +33,20 @@ jobs:
         run: cd starter/backend && pipenv run lint
 
   # Testing
-  testing:
+    testing:
     runs-on: ubuntu-latest
     steps:
       # Check out code
       - name: Checkout code
         uses: actions/checkout@v3
       
-      # Setup Python
+      # Setup Python and restore cache
       - name: Set up Python
         run: cd starter/backend && pip install pipenv
-
-      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-python-${{ steps.setup-python.ouputs.python-version }}
 
       # Install dependencies
       - name: Install dependencies
