@@ -1,0 +1,95 @@
+name: 'Backend Continuous Integration'
+
+# Run this workflows on pull requests against Main branch and enable manual trigger
+on:
+  merge:
+    paths:
+      - starter/backend/**
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  # Linting
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Setup Python
+      - name: Set up Python
+        run: cd starter/backend && pip install pipenv
+
+      # Cache
+
+      # Install dependencies
+      - name: Install dependencies
+        run: cd starter/backend && pipenv install --dev
+
+      # Run linting
+      - name: Run linting
+        run: cd starter/backend && pipenv run lint
+
+  # Testing
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Setup Python and restore cache
+      - name: Set up Python
+        run: cd starter/backend && pip install pipenv
+      - uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-python-${{ steps.setup-python.ouputs.python-version }}
+
+      # Install dependencies
+      - name: Install dependencies
+        run: cd starter/backend && pipenv install --dev
+
+      # Run tests
+      - name: Run tests
+        run: cd starter/backend && pipenv run pytest
+
+  # Building only if above 2 pass
+  building:
+    needs: [linting, testing]
+    runs-on: ubuntu-latest
+    steps:
+      # Check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Setup Python
+      - name: Set up Python
+        run: cd starter/backend && pip install pipenv
+
+      # Cache
+
+      # Install dependencies
+      - name: Install dependencies
+        run: cd starter/backend && pipenv install --dev
+
+      # Run tests
+      - name: Run tests
+        run: cd starter/backend && pipenv run pytest     
+
+      # Configure AWS credentials
+
+      # Log in to ECR
+
+      # Push image to ECR
+
+      # Configure Kubernetes cluster
+
+      # Select image from ECR
+
+      # Deploy to cluster
+      
+    
+    

@@ -33,7 +33,7 @@ jobs:
         run: cd starter/backend && pipenv run lint
 
   # Testing
-    testing:
+  testing:
     runs-on: ubuntu-latest
     steps:
       # Check out code
