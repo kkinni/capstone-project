@@ -3,6 +3,8 @@ name: 'Frontend Continuous Integration'
 # Run this workflows on pull requests against Main branch and enable manual trigger
 on:
   pull_request:
+    paths:
+      - starter/frontend/**
     branches:
       - 'main'
   workflow_dispatch:
