@@ -5,10 +5,10 @@ on:
   pull_request:
     branches:
       - 'main'
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
-# Linting - NEED TO ADD CACHE ACTION
+  # Linting - NEED TO ADD CACHE ACTION
   linting:
     runs-on: ubuntu-latest
     steps:
@@ -26,12 +26,58 @@ jobs:
 
       # Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: cd starter/frontend && npm ci
 
       # Run linting
       - name: Run linting
-        run: npm lint
+        run: cd starter/frontend && npm lint
 
-# Testing
+  # Testing
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out frontend code
+      - name: Checkout frontend code
+        uses: actions/checkout@v3
+      
+      # Setup Node JS
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      
+      # Perform cache action
 
-# Building
+      # Install dependencies
+      - name: Install dependencies
+        run: cd starter/frontend && npm ci
+
+      # Run tests
+      - name: Run linting
+        run: cd starter/frontend && npm run test
+
+  # Building only if above 2 pass
+  building:
+    needs: [linting, testing]
+    runs-on: ubuntu-latest
+    steps:
+      # Check out frontend code
+      - name: Checkout frontend code
+        uses: actions/checkout@v3
+      
+      # Setup Node JS
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      
+      # Perform cache action
+
+      # Install dependencies
+      - name: Install dependencies
+        run: cd starter/frontend && npm ci
+
+      # Run build
+      
+    
+    
