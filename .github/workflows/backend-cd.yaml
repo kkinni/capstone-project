@@ -1,4 +1,4 @@
-name: 'Backend Continuous Integration'
+name: 'Backend Continuous Deployment'
 
 # Run this workflows on pull requests against Main branch and enable manual trigger
 on:
