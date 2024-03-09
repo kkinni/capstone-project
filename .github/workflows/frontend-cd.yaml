@@ -1,0 +1,96 @@
+name: 'Frontend Continuous Deployment'
+
+# Run this workflows on push against Main branch and enable manual trigger
+on:
+  push:
+    paths:
+      - starter/frontend/**
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  # Linting
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Setup Node JS and restore cache
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: ${{github.workspace}}/starter/frontend/package-lock.json
+
+      # Install dependencies
+      - name: Install dependencies
+        run: cd starter/frontend && npm ci
+
+      # Run linting
+      - name: Run linting
+        run: cd starter/frontend && npm lint
+
+  # Testing
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Setup Node JS and restore cache
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: ${{github.workspace}}/starter/frontend/package-lock.json
+
+      # Install dependencies
+      - name: Install dependencies
+        run: cd starter/frontend && npm ci
+
+      # Run tests
+      - name: Run tests
+        run: cd starter/frontend && npm run test
+
+  # Building only if above 2 pass
+  building:
+    needs: [linting, testing]
+    runs-on: ubuntu-latest
+    steps:
+      # Check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Setup Node JS and restore cache
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: ${{github.workspace}}/starter/frontend/package-lock.json
+      
+      # Install dependencies
+      - name: Install dependencies
+        run: cd starter/frontend && npm ci
+
+      # Run tests
+      - name: Run tests
+        run: cd starter/frontend && npm run test
+
+      # Configure AWS credentials
+
+      # Log in to ECR
+
+      # Push image to ECR
+
+      # Configure Kubernetes cluster
+
+      # Select image from ECR
+
+      # Deploy to cluster
