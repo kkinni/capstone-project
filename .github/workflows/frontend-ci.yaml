@@ -1,0 +1,14 @@
+name: 'Frontend CI'
+
+# Run on pull requests against main and manually
+on:
+  pull_request:
+    branches:
+      - 'main'
+  workflow_dispatch
+
+# Linting
+
+# Testing
+
+# Building
