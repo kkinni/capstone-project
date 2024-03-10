@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  ECR_REPO: frontend-repo
+  ECR_REPO: frontend
   REACT_APP_MOVIE_API_URL: http://localhost:5000
 
 jobs:
@@ -133,7 +133,20 @@ jobs:
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       # Configure Kubernetes cluster
+      - name: Configure kubernetes cluster
+        working-directory: starter/frontend/k8s
+        run: aws eks update-kubeconfig --region us-east-1 --name cluster
 
       # Select image from ECR
+      - name: Select image
+        working-directory: starter/frontend/k8s
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{env.ECR_REPO}}
+          IMAGE_TAG: ${{ github.sha }}
+        run: kustomize edit set image frontend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       # Deploy to cluster
+      - name: Deploy to cluster
+        working-directory: starter/frontend/k8s
+        run: kustomize build | kubectl apply -f - 

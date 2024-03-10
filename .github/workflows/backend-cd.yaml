@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  ECR_REPO: backend-repo
+  ECR_REPO: backend
 
 jobs:
   # Linting
@@ -120,10 +120,22 @@ jobs:
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       # Configure Kubernetes cluster
+      - name: Configure kubernetes cluster
+        working-directory: starter/backend/k8s
+        run: aws eks update-kubeconfig --region us-east-1 --name cluster
 
       # Select image from ECR
+      - name: Select image
+        working-directory: starter/backend/k8s
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{env.ECR_REPO}}
+          IMAGE_TAG: ${{ github.sha }}
+        run: kustomize edit set image backend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       # Deploy to cluster
-      
-    
+      - name: Deploy to cluster
+        working-directory: starter/backend/k8s
+        run: kustomize build | kubectl apply -f -      
+
     
