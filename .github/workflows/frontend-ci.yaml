@@ -36,7 +36,7 @@ jobs:
       #       ${{ runner.os }}-node-
       
       - name: Clear cache
-      - uses: actions/cache@v4
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}            
