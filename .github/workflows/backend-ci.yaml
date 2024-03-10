@@ -22,7 +22,12 @@ jobs:
       - name: Set up Python
         run: cd starter/backend && pip install pipenv
 
-      # Cache
+      # Clear cache using an Action
+      - name: Clear cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-python-${{ steps.setup-python.ouputs.python-version }}
 
       # Install dependencies
       - name: Install dependencies
@@ -40,14 +45,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      # Setup Python and restore cache
+      # Setup Python
       - name: Set up Python
         run: cd starter/backend && pip install pipenv
-      - uses: actions/cache@v3
+
+      # Clear cache using an Action
+      - name: Clear cache
+        uses: actions/cache@v4
         with:
           path: ~/.local/share/virtualenvs
           key: ${{ runner.os }}-python-${{ steps.setup-python.ouputs.python-version }}
-
+          
       # Install dependencies
       - name: Install dependencies
         run: cd starter/backend && pipenv install --dev
