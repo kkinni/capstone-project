@@ -11,7 +11,7 @@ on:
 
 env:
   ECR_REPO: frontend
-  REACT_APP_MOVIE_API_URL: http://localhost:5000
+  REACT_APP_MOVIE_API_URL: a7febbf3fd4c94500853c77fadd5c8ea-1426805110.us-east-1.elb.amazonaws.com
 
 jobs:
   # Linting
