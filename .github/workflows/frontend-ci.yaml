@@ -18,13 +18,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      # Setup Node JS and restore cache
+      # Setup Node JS
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
-          cache-dependency-path: ${{github.workspace}}/starter/frontend/package-lock.json
+          # cache: 'npm'
+          # cache-dependency-path: ${{github.workspace}}/starter/frontend/package-lock.json
+      
+      # Clear cache using an Action
+      - name: Cache restore
+        uses: ylemkimon/cache-restore@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-      
 
       # Install dependencies
       - name: Install dependencies
