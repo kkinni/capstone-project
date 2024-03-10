@@ -35,25 +35,11 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-node-
       
-      # - name: Clear cache
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ~/.npm
-      #     key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}            
-
-      - name: Create npm cache dir
-        id: npm-cache-dir
-        shell: bash
-        run: echo "dir=$(get_npm_cache)" >> ${GITHUB_OUTPUT}
-      
       - name: Clear cache
-        uses: actions/cache@v3
-        id: npm-cache 
+        uses: actions/cache@v4
         with:
-          path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}            
 
       # Install dependencies
       - name: Install dependencies
