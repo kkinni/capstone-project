@@ -41,6 +41,11 @@ jobs:
       #     path: ~/.npm
       #     key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}            
 
+      - name: Create npm cache dir
+        id: npm-cache-dir
+        shell: bash
+        run: echo "dir=$(get_npm_cache)" >> ${GITHUB_OUTPUT}
+      
       - name: Clear cache
         uses: actions/cache@v3
         id: npm-cache 
