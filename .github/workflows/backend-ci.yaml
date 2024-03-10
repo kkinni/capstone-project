@@ -70,11 +70,11 @@ jobs:
         run: cd starter/backend && pip install pipenv
 
       # Clear cache using an Action
-      - name: Cache dependencies
+      - name: Clear cache
         uses: actions/cache@v4
         with:
           path: ~/.local/share/virtualenvs
-          key: deps-python-${{ hashFiles('**/Pipfile.lock') }}
+          key: ${{ runner.os }}-python-${{ steps.setup-python.ouputs.python-version }}
 
       # Install dependencies
       - name: Install dependencies
