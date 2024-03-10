@@ -35,11 +35,20 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-node-
       
+      # - name: Clear cache
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/.npm
+      #     key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}            
+
       - name: Clear cache
-        uses: actions/cache@v4
+        uses: actions/cache@v3
+        id: npm-cache 
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}            
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       # Install dependencies
       - name: Install dependencies
